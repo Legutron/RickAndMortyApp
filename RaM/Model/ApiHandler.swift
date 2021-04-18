@@ -24,16 +24,16 @@ class ApiHandler{
         }
     }
     
-//    func CharactersInfo() throws -> Info?{
-//        let url = URL(string: charactersUrl)!
-//        if let data = try dataFromUrl(url: url){
-//            let charResult = try decoder.decode(Characters.self, from: data)
-//            let info = charResult.info
-//            return info
-//        }else{
-//            return nil
-//        }
-//    }
+    func getCharactersInfo() throws -> Info?{
+        let url = URL(string: charactersUrl)!
+        if let data = try dataFromUrl(url: url){
+            let charResult = try decoder.decode(CharacterMain.self, from: data)
+            let info = charResult.info
+            return info
+        }else{
+            return nil
+        }
+    }
     
 //    func EpisodesInfo() throws -> Info?{
 //        let url = URL(string: episodesUrl)!
@@ -45,7 +45,7 @@ class ApiHandler{
 //        }
 //    }
 
-    func pullCharacters(page: Int) throws -> [CharacterResults]?{
+    func getCharacters(page: Int) throws -> [CharacterResults]?{
         let page = "/?page=\(page)"
         let url = URL(string: charactersUrl + page)!
         if let data = try dataFromUrl(url: url){
@@ -56,6 +56,16 @@ class ApiHandler{
         }else{
             return nil
         }
+    }
+    
+    func getPicture(url: URL?) -> UIImage{
+        var image = UIImage(named: "welcome")!
+        if url != nil{
+            if let data = try? Data(contentsOf: url!){
+                image = UIImage(data: data)!
+            }
+        }
+        return image
     }
     
 //    func pullEpisodes(page: Int) throws -> [EpisodeResults]?{
@@ -82,13 +92,7 @@ class ApiHandler{
 //        }
 //    }
     
-//    func pullPicture(url: URL) -> UIImage{
-//        var image = UIImage(named: "welcome")!
-//        if let data = try? Data(contentsOf: url){
-//            image = UIImage(data: data)!
-//        }
-//        return image
-//    }
+
     
 //    func pullFiltredCharacters(status: String) throws -> [CharacterResults]?{
 //

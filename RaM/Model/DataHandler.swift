@@ -5,7 +5,7 @@
 //  Created by Jakub Legut on 31/03/2021.
 //
 
-import Foundation
+import UIKit
 
 struct DataHandler {
     
@@ -14,15 +14,29 @@ struct DataHandler {
     
     
     func getCharacters(iteration: Int) throws -> [CharacterResults]?{
-        var characters: [CharacterResults]?
         
-        characters = try api.pullCharacters(page: iteration)
-    
-        return characters
+        if let characters = try api.getCharacters(page: iteration){
+            try core.saveCharacters(characters: characters)
+            return characters
+        }else{
+            var characters: [CharacterResults]?
+            characters = try core.getCharacters()
+            return characters
+        }
     }
     
+    func getAvatar(url: URL?) -> UIImage{
+        return api.getPicture(url: url)
+    }
     
-    
-    
+    func getCharInfo() -> Info?{
+        do{
+           let info = try api.getCharactersInfo()
+            return info
+        }catch{
+            print(error.localizedDescription)
+            return nil
+        }
+    }
     
 }

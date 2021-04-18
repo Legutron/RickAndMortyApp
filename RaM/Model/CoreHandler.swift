@@ -16,14 +16,37 @@ class CoreHandler{
     
     func saveCharacters(characters: [CharacterResults]) throws{
         print("save Characters")
-
-        for char in characters{
-            let lastId = try LastCharacter()
-            if lastId == nil || lastId! < char.id{
-                try addCharacter(character: char)
+        if let charId = try charactersId(){
+            print(charId)
+            print("char ID in CoreHandler")
+        
+            for char in characters{
+                
+                if charId.count == 0{
+                    try addCharacter(character: char)
+                }else if !charId.contains(Int64(char.id)){
+                    try addCharacter(character: char)
+                }
             }
         }
     }
+    
+    func getCharacters() throws -> [CharacterResults]{
+        print("character coreData")
+        let request = CoreCharacters.fetchRequest() as NSFetchRequest<CoreCharacters>
+        let data = try self.context.fetch(request)
+        var characters = [CharacterResults]()
+
+        for char in data{
+            let character = CharacterResults(id: Int(char.id), name: char.name!, status: char.status!, species: char.species!, type: char.type!, gender: char.gender!, origin: Origin(name: char.originName!, url: char.originUrl!), location: Location(name: char.locationName!, url: char.locationUrl!), image: URL(string: char.image!), episode: [], url: URL(string: char.url!), created: char.created!)
+            print(char.id)
+
+            characters.append(character)
+        }
+        return characters
+    }
+    
+    
 
 //    func saveEpisodes(episodes: [EpisodeResults]) throws{
 //        print("save Episodes")
@@ -107,21 +130,7 @@ class CoreHandler{
 //        try self.context.save()
 //    }
 //
-//    func getCharacter() throws -> [CharacterResults]{
-//
-//        print("character coreData")
-//        let request = Character.fetchRequest() as NSFetchRequest<Character>
-//        let data = try self.context.fetch(request)
-//        var characters = [CharacterResults]()
-//
-//        for char in data{
-//            let character = CharacterResults(id: Int(char.id), name: char.name!, status: char.status!, species: char.species!, type: char.type!, gender: char.gender!, origin: Origin(name: char.originName!, url: char.originUrl!), location: Location(name: char.locationName!, url: char.locationUrl!), image: URL(string: char.image!), episode: [], url: URL(string: char.url!), created: char.created!)
-//            print(char.id)
-//
-//            characters.append(character)
-//        }
-//        return characters
-//    }
+
 //
 //    func getEpisode() throws -> [Episode]{
 //
@@ -193,7 +202,7 @@ class CoreHandler{
 
 extension CoreHandler{
     
-    private func LastCharacter() throws -> Int64?{
+    private func lastCharacter() throws -> Int64?{
 
         let request = CoreCharacters.fetchRequest() as NSFetchRequest<CoreCharacters>
         let sort = NSSortDescriptor(key: "id", ascending: false)
@@ -209,4 +218,24 @@ extension CoreHandler{
             return nil
         }
     }
+    
+    private func charactersId() throws -> [Int64]?{
+
+        let request = CoreCharacters.fetchRequest() as NSFetchRequest<CoreCharacters>
+        let sort = NSSortDescriptor(key: "id", ascending: false)
+
+        request.sortDescriptors = [sort]
+        //request.fetchLimit = 1
+
+        let character = try self.context.fetch(request)
+        
+        var array: [Int64] = []
+        for char in character{
+            array.append(char.id)
+        }
+        return array
+    }
+    
+    
+    
 }
