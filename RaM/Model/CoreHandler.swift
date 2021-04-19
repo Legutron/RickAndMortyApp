@@ -46,6 +46,25 @@ class CoreHandler{
         return characters
     }
     
+    func getFiltredCharacters(status: String) throws -> [CharacterResults]{
+    
+        print("character coreData")
+        let request = CoreCharacters.fetchRequest() as NSFetchRequest<CoreCharacters>
+        let format = "status CONTAINS '\(status)'"
+        let pred = NSPredicate(format: format)
+        request.predicate = pred
+        let data = try self.context.fetch(request)
+        var characters = [CharacterResults]()
+    
+        for char in data{
+            let character = CharacterResults(id: Int(char.id), name: char.name!, status: char.status!, species: char.species!, type: char.type!, gender: char.gender!, origin: Origin(name: char.originName!, url: char.originUrl!), location: Location(name: char.locationName!, url: char.locationUrl!), image: URL(string: char.image!), episode: [], url: URL(string: char.url!), created: char.created!)
+                print(char.id)
+    
+            characters.append(character)
+        }
+        return characters
+    }
+    
     
 
 //    func saveEpisodes(episodes: [EpisodeResults]) throws{
@@ -140,24 +159,7 @@ class CoreHandler{
 //        return data
 //    }
 //
-//    func getFiltredCharacters(status: String) throws -> [CharacterResults]{
-//
-//        print("character coreData")
-//        let request = Character.fetchRequest() as NSFetchRequest<Character>
-//        let format = "status CONTAINS '\(status)'"
-//        let pred = NSPredicate(format: format)
-//        request.predicate = pred
-//        let data = try self.context.fetch(request)
-//        var characters = [CharacterResults]()
-//
-//        for char in data{
-//            let character = CharacterResults(id: Int(char.id), name: char.name!, status: char.status!, species: char.species!, type: char.type!, gender: char.gender!, origin: Origin(name: char.originName!, url: char.originUrl!), location: Location(name: char.locationName!, url: char.locationUrl!), image: URL(string: char.image!), episode: [], url: URL(string: char.url!), created: char.created!)
-//            print(char.id)
-//
-//            characters.append(character)
-//        }
-//        return characters
-//    }
+
 
 
 

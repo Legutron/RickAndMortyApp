@@ -10,8 +10,20 @@ import UIKit
 
 extension CharacterViewController: UITableViewDelegate, UITableViewDataSource{
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toCharacterDetail" {
+            let destVC = segue.destination as! DetailsViewController
+            destVC.character = choosedCharacter
+        }else{
+        }
+    }
     
-    
+    func reloadTableData(){
+        characterTableView.reloadData()
+        if characters.count > (pageIteration-1) * 20{
+            //hideActivityIndicator()
+        }
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return characters.count
@@ -32,21 +44,21 @@ extension CharacterViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row == characters.count - 1{
             
-            
-            
-//            if connection == true && statusControl.selectedSegmentIndex == 0{
-//                let spinner = UIActivityIndicatorView(style: .gray)
-//
-//                if page == maxPage{
-//                    spinner.startAnimating()
-//                    spinner.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: tableView.bounds.width, height: CGFloat(10))
-//                }else{
-//                    spinner.stopAnimating()
-//                    page += 1
-//                    loadData(page: page)
-//                }
-//            }
+            if connection{
+                if pageIteration < info!.pages{
+                    //showActivityIndicator()
+                    pageIteration += 1
+                    loadCharacters()
+                    reloadTableData()
+                    //hideActivityIndicator()
+                }
+            }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        choosedCharacter = characters[indexPath.row]
+        self.performSegue(withIdentifier: "toCharacterDetail", sender: nil)
     }
     
 

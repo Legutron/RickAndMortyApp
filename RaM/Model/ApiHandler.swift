@@ -58,6 +58,19 @@ class ApiHandler{
         }
     }
     
+    func getFiltredCharacters(status: String) throws -> [CharacterResults]?{
+        let page = "/?status=\(status)"
+        let url = URL(string: charactersUrl + page)!
+        print(url)
+        if let data = try dataFromUrl(url: url){
+            let CharResult = try decoder.decode(CharacterMain.self, from: data)
+            let characters = CharResult.results
+            return characters
+        }else{
+            return nil
+        }
+    }
+    
     func getPicture(url: URL?) -> UIImage{
         var image = UIImage(named: "welcome")!
         if url != nil{
@@ -94,18 +107,5 @@ class ApiHandler{
     
 
     
-//    func pullFiltredCharacters(status: String) throws -> [CharacterResults]?{
-//
-//        let page = "/?status=\(status)"
-//        let url = URL(string: charactersUrl + page)!
-//        print(url)
-//        if let data = try dataFromUrl(url: url){
-//            let CharResult = try decoder.decode(Characters.self, from: data)
-//            let characters = CharResult.results
-//            try dataHandler.saveCharacters(characters: characters)
-//            return characters
-//        }else{
-//            return nil
-//        }
-//    }
+
 }

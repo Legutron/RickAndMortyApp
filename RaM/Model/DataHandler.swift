@@ -39,4 +39,13 @@ struct DataHandler {
         }
     }
     
+    func getFiltredData(status: String) throws -> [CharacterResults]?{
+        if let characters = try api.getFiltredCharacters(status: status){
+            return characters
+        }else{
+            let characters = try core.getFiltredCharacters(status: status)
+            return characters
+        }
+    }
+    
 }

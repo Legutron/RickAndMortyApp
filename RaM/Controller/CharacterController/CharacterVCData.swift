@@ -13,9 +13,8 @@ extension CharacterViewController{
     func loadCharacters(){
         do{
             if let char = try data.getCharacters(iteration: pageIteration){
-                characters = char
+                characters += char
             }
-            
         }catch{
             print(error.localizedDescription)
         }
@@ -31,6 +30,15 @@ extension CharacterViewController{
             connection = false
         }else{
             connection = true
+        }
+    }
+    
+    func loadFiltredData(status: String){
+        do{
+            characters = try data.getFiltredData(status: status) ?? []
+            reloadTableData()
+        }catch{
+            print(error.localizedDescription)
         }
     }
     

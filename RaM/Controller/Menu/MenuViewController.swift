@@ -9,11 +9,40 @@ import UIKit
 
 class MenuViewController: UIViewController {
     
+    var activityView: UIActivityIndicatorView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
+    
+    @IBAction func characterBtnPressed(_ sender: Any) {
+        self.performSegue(withIdentifier: "toCharacter", sender: nil)
+    }
+    
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        showActivityIndicator()
+        if segue.identifier == "toCharacter" {
+        }else{
+        }
+    }
+    
+    
+    func showActivityIndicator() {
+        activityView = UIActivityIndicatorView(style: .large)
+        activityView?.center = self.view.center
+        activityView?.color = UIColor(named: "appYellow") ?? UIColor.yellow
+        self.view.addSubview(activityView!)
+        activityView?.startAnimating()
+    }
 
+    func hideActivityIndicator(){
+        if (activityView != nil){
+            activityView?.stopAnimating()
+        }
+    }
 
 }
 
