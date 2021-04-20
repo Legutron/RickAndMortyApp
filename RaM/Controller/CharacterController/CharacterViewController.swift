@@ -19,9 +19,9 @@ class CharacterViewController: UIViewController {
     var connection = false
     var info: Info?
     var choosedCharacter: CharacterResults?
-    var choosedAvatar: UIImage?
-    
+
     var activityView: UIActivityIndicatorView?
+    
         
     override func viewDidLoad() {
         super.viewDidLoad()    

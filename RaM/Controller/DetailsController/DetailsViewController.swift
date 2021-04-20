@@ -12,7 +12,7 @@ class DetailsViewController: UIViewController {
     var character: CharacterResults?
     var avatar: UIImage?
     
-    var api = DataHandler()
+    var data = DataHandler()
     
     @IBOutlet weak var avatarImage: UIImageView!
     @IBOutlet weak var idLabel: UILabel!
@@ -23,11 +23,13 @@ class DetailsViewController: UIViewController {
     @IBOutlet weak var originLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var createdLabel: UILabel!
+    @IBOutlet weak var favButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setLabels()
         loadAvatar()
+        setFavButton()
     }
     
     private func setLabels(){
@@ -45,8 +47,30 @@ class DetailsViewController: UIViewController {
     
     private func loadAvatar(){
         if character != nil{
-            avatarImage.image = api.getAvatar(url: character?.image)
+            avatarImage.image = data.getAvatar(url: character?.image)
+        }
+    }
+    
+    private func setFavButton(){
+        if data.isItFavorite(id: Int64(character!.id)){
+            favButton.setBackgroundImage(UIImage(systemName: "heart.fill"), for: UIControl.State.normal)
+        }else{
+            favButton.setBackgroundImage(UIImage(systemName: "heart"), for: UIControl.State.normal)
         }
     }
 
+    @IBAction func favButtonPressed(_ sender: Any) {
+        do{
+            if data.isItFavorite(id: Int64(character!.id)){
+                try data.deleteFavorites(id: Int64(character!.id))
+            }else{
+                try data.saveFavorites(id: Int64(character!.id))
+                setFavButton()
+            }
+        }catch{
+            print(error.localizedDescription)
+        }
+        setFavButton()
+    }
+    
 }

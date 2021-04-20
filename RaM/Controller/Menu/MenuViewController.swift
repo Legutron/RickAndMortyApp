@@ -20,13 +20,12 @@ class MenuViewController: UIViewController {
         self.performSegue(withIdentifier: "toCharacter", sender: nil)
     }
     
-    
+    @IBAction func favoritesBtnPressed(_ sender: Any) {
+        self.performSegue(withIdentifier: "toFavorites", sender: nil)
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         showActivityIndicator()
-        if segue.identifier == "toCharacter" {
-        }else{
-        }
     }
     
     

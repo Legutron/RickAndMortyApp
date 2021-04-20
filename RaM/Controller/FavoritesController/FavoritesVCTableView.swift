@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-extension CharacterViewController: UITableViewDelegate, UITableViewDataSource{
+extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource{
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toCharacterDetail" {
@@ -20,9 +20,6 @@ extension CharacterViewController: UITableViewDelegate, UITableViewDataSource{
     
     func reloadTableData(){
         characterTableView.reloadData()
-        if characters.count > (pageIteration-1) * 20{
-            //hideActivityIndicator()
-        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -40,22 +37,7 @@ extension CharacterViewController: UITableViewDelegate, UITableViewDataSource{
         cell.avatar.image = loadAvatar(url: characters[indexPath.row].image)
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == characters.count - 1{
-            
-            if connection{
-                if pageIteration < info!.pages{
-                    //showActivityIndicator()
-                    pageIteration += 1
-                    loadCharacters()
-                    reloadTableData()
-                    //hideActivityIndicator()
-                }
-            }
-        }
-    }
-    
+        
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         choosedCharacter = characters[indexPath.row]
         self.performSegue(withIdentifier: "toCharacterDetail", sender: nil)

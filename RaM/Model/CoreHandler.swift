@@ -31,6 +31,14 @@ class CoreHandler{
         }
     }
     
+    func saveFavorite(id: Int64) throws{
+        let favorites = try getFavorites()
+        if !favorites.contains(id){
+            try addFavorite(id: id)
+        }
+    }
+    
+    
     func getCharacters() throws -> [CharacterResults]{
         print("character coreData")
         let request = CoreCharacters.fetchRequest() as NSFetchRequest<CoreCharacters>
@@ -65,6 +73,39 @@ class CoreHandler{
         return characters
     }
     
+    func getFavorites() throws -> [Int64]{
+        let request = CoreFavorites.fetchRequest() as NSFetchRequest<CoreFavorites>
+        let data = try self.context.fetch(request)
+        var favorites: [Int64] = []
+
+        for fav in data{
+            favorites.append(fav.id)
+        }
+        return favorites
+    }
+    
+    func getFavoritesCharacters(list: [Int64]) throws -> [CharacterResults]{
+        let characters = try getCharacters()
+        var result: [CharacterResults] = []
+        for char in characters{
+            if list.contains(Int64(char.id)){
+                result.append(char)
+            }
+        }
+        return result
+    }
+    
+    func deleteFavorties(id: Int64) throws{
+        let request = CoreFavorites.fetchRequest() as NSFetchRequest<CoreFavorites>
+        let format = "id CONTAINS '\(id)'"
+        let pred = NSPredicate(format: format)
+        request.predicate = pred
+        let data = try self.context.fetch(request)
+        for object in data {
+            context.delete(object)
+        }
+    }
+    
     
 
 //    func saveEpisodes(episodes: [EpisodeResults]) throws{
@@ -82,13 +123,15 @@ class CoreHandler{
 //        }
 //    }
 //
-//    func addFavorite(id: Int64) throws{
-//        let newFav = Favorites(context: context)
-//        newFav.id = id
-//        self.context.insert(newFav)
-//        try self.context.save()
-//    }
-//
+    func addFavorite(id: Int64) throws{
+        let newFav = CoreFavorites(context: context)
+        newFav.id = id
+        self.context.insert(newFav)
+        try self.context.save()
+    }
+    
+
+
     func addCharacter(character: CharacterResults) throws {
 
         print("add character")
@@ -237,6 +280,8 @@ extension CoreHandler{
         }
         return array
     }
+    
+    
     
     
     

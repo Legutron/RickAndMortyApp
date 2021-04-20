@@ -48,4 +48,32 @@ struct DataHandler {
         }
     }
     
+    func saveFavorites(id: Int64) throws{
+        try core.saveFavorite(id: id)
+    }
+    
+    func isItFavorite(id: Int64) -> Bool{
+        do{
+            let favorites = try core.getFavorites()
+            if favorites.contains(id){
+                return true
+            }else{
+                return false
+            }
+        }catch{
+            print(error.localizedDescription)
+            return false
+        }
+    }
+    
+    func getFavortiesCharacter() throws -> [CharacterResults]{
+        let favIds = try core.getFavorites()
+        let result = try core.getFavoritesCharacters(list: favIds)
+        return result
+    }
+    
+    func deleteFavorites(id: Int64)throws{
+        try core.deleteFavorties(id: id)
+    }
+    
 }
