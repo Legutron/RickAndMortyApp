@@ -23,6 +23,11 @@ class ApiHandler{
             return nil
         }
     }
+}
+
+//MARK:- CHARACTERS
+
+extension ApiHandler{
     
     func getCharactersInfo() throws -> Info?{
         let url = URL(string: charactersUrl)!
@@ -35,16 +40,6 @@ class ApiHandler{
         }
     }
     
-//    func EpisodesInfo() throws -> Info?{
-//        let url = URL(string: episodesUrl)!
-//        if let data = try dataFromUrl(url: url){
-//            let episodesInfo = try decoder.decode(Info.self, from: data)
-//            return episodesInfo
-//        }else{
-//            return nil
-//        }
-//    }
-
     func getCharacters(page: Int) throws -> [CharacterResults]?{
         let page = "/?page=\(page)"
         let url = URL(string: charactersUrl + page)!
@@ -81,20 +76,36 @@ class ApiHandler{
         return image
     }
     
-//    func pullEpisodes(page: Int) throws -> [EpisodeResults]?{
-//        let page = "/?page=\(page)"
-//        let url = URL(string: episodesUrl + page)!
-//        if let data = try dataFromUrl(url: url){
-//            let epiResults = try decoder.decode(Episodes.self, from: data)
-//            let episodes = epiResults.results
-//            //try dataHandler.saveCharacters(characters: characters)
-//            return episodes
-//        }else{
-//            return nil
-//        }
-//    }
+}
+
+//MARK:- EPISODES
+
+extension ApiHandler{
     
-//    func pullEpisode(url: URL) throws -> EpisodeResults?{
+    func EpisodesInfo() throws -> Info?{
+            let url = URL(string: episodesUrl)!
+            if let data = try dataFromUrl(url: url){
+            let episodesInfo = try decoder.decode(Info.self, from: data)
+            return episodesInfo
+        }else{
+            return nil
+        }
+    }
+
+    func getEpisodes(page: Int) throws -> [EpisodeResults]?{
+        let page = "/?page=\(page)"
+        let url = URL(string: episodesUrl + page)!
+        if let data = try dataFromUrl(url: url){
+            let epiResults = try decoder.decode(EpisodeMain.self, from: data)
+            let episodes = epiResults.results
+            //try dataHandler.saveCharacters(characters: characters)
+            return episodes
+        }else{
+            return nil
+        }
+    }
+    
+//    func getEpisode(url: URL) throws -> EpisodeResults?{
 //
 //        if let data = try dataFromUrl(url: url){
 //            let epiResults = try decoder.decode(EpisodeResults.self, from: data)

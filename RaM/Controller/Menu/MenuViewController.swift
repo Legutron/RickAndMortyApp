@@ -24,8 +24,16 @@ class MenuViewController: UIViewController {
         self.performSegue(withIdentifier: "toFavorites", sender: nil)
     }
     
+    @IBAction func episodesBtnPressed(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "toEpisodes", sender: nil)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        showActivityIndicator()
+        
+        if segue.identifier != "toAbout" {
+            showActivityIndicator()
+        }
+        
     }
     
     

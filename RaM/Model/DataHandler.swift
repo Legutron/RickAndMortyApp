@@ -12,6 +12,11 @@ struct DataHandler {
     let api = ApiHandler()
     let core = CoreHandler()
     
+}
+
+// MARK:- CHARACTERS
+
+extension DataHandler{
     
     func getCharacters(iteration: Int) throws -> [CharacterResults]?{
         
@@ -74,6 +79,20 @@ struct DataHandler {
     
     func deleteFavorites(id: Int64)throws{
         try core.deleteFavorties(id: id)
+    }
+    
+}
+
+// MARK:- EPISODES
+extension DataHandler{
+    
+    func getEpisodes(iteration: Int = 0) throws -> [EpisodeResults]?{
+        if let episodes = try api.getEpisodes(page: iteration){
+            return episodes
+        }else{
+            //CORE DATA CODE HERE
+            return nil
+        }
     }
     
 }
