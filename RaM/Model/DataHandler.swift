@@ -84,15 +84,24 @@ extension DataHandler{
 }
 
 // MARK:- EPISODES
+
 extension DataHandler{
     
     func getEpisodes(iteration: Int = 0) throws -> [EpisodeResults]?{
         if let episodes = try api.getEpisodes(page: iteration){
+            try core.saveEpisodes(episodes: episodes)
             return episodes
         }else{
-            //CORE DATA CODE HERE
-            return nil
+            let episodes = try core.getEpisode()
+            return episodes
         }
+    }
+    
+    func getEpisodeInfo() throws -> Info?{
+        let data = try api.getEpisodesInfo()
+        print(data)
+        print("GET EPISODE INFOOO")
+        return data
     }
     
 }

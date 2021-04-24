@@ -82,11 +82,12 @@ extension ApiHandler{
 
 extension ApiHandler{
     
-    func EpisodesInfo() throws -> Info?{
+    func getEpisodesInfo() throws -> Info?{
             let url = URL(string: episodesUrl)!
             if let data = try dataFromUrl(url: url){
-            let episodesInfo = try decoder.decode(Info.self, from: data)
-            return episodesInfo
+            let episodesInfo = try decoder.decode(EpisodeMain.self, from: data)
+            let info = episodesInfo.info
+            return info
         }else{
             return nil
         }
@@ -105,16 +106,7 @@ extension ApiHandler{
         }
     }
     
-//    func getEpisode(url: URL) throws -> EpisodeResults?{
-//
-//        if let data = try dataFromUrl(url: url){
-//            let epiResults = try decoder.decode(EpisodeResults.self, from: data)
-//            //try dataHandler.saveCharacters(characters: characters)
-//            return epiResults
-//        }else{
-//            return nil
-//        }
-//    }
+
     
 
     

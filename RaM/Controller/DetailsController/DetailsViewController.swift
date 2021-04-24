@@ -41,7 +41,7 @@ class DetailsViewController: UIViewController {
             genderLabel.text = character!.gender
             originLabel.text = character!.origin.name
             locationLabel.text = character!.location.name
-            createdLabel.text = character!.created
+            createdLabel.text = character!.created.toFormatedDate()
         }
     }
     

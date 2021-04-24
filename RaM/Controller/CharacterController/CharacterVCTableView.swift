@@ -61,4 +61,6 @@ extension CharacterViewController: UITableViewDelegate, UITableViewDataSource{
         self.performSegue(withIdentifier: "toCharacterDetail", sender: nil)
     }
     
+
+    
 }

@@ -14,6 +14,12 @@ class CoreHandler{
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     let api = ApiHandler()
     
+}
+
+// MARK: - CHARACTERS
+
+extension CoreHandler{
+    
     func saveCharacters(characters: [CharacterResults]) throws{
         print("save Characters")
         if let charId = try charactersId(){
@@ -106,23 +112,6 @@ class CoreHandler{
         }
     }
     
-    
-
-//    func saveEpisodes(episodes: [EpisodeResults]) throws{
-//        print("save Episodes")
-//
-//        for epi in episodes{
-//            let epiIds = try fetchEpisodesId()
-//            if epiIds == nil{
-//                try addEpisode(episode: epi)
-//            }else{
-//                if ((epiIds?.contains(Int64(epi.id))) != nil){ print("episode extists")} else{
-//                   try addEpisode(episode: epi)
-//                }
-//            }
-//        }
-//    }
-//
     func addFavorite(id: Int64) throws{
         let newFav = CoreFavorites(context: context)
         newFav.id = id
@@ -155,6 +144,79 @@ class CoreHandler{
             self.context.insert(newCharacter)
             try self.context.save()
     }
+}
+
+//MARK:- EPISODES
+
+extension CoreHandler{
+    
+    func saveEpisodes(episodes: [EpisodeResults]) throws{
+        print("save Episodes")
+    
+        for epi in episodes{
+            let epiIds = try getEpisodesId()
+            if epiIds == nil{
+                try addEpisode(episode: epi)
+            }else{
+                if ((epiIds?.contains(Int64(epi.id))) != nil){ print("episode extists")} else{
+                    try addEpisode(episode: epi)
+                }
+            }
+        }
+    }
+    
+    func addEpisode(episode: EpisodeResults) throws{
+    
+        let newEpisode = CoreEpisodes(context: context)
+        newEpisode.id = Int64(episode.id)
+        newEpisode.name = episode.name
+        newEpisode.airDate = episode.air_date
+        newEpisode.url = episode.url.absoluteString
+        newEpisode.created = episode.created
+    
+        print("saved in coreData: \(String(describing: episode.url))")
+        self.context.insert(newEpisode)
+        try self.context.save()
+    }
+    
+    private func getEpisodesId() throws -> [Int64]?{
+    
+        let request = CoreEpisodes.fetchRequest() as NSFetchRequest<CoreEpisodes>
+        let sort = NSSortDescriptor(key: "id", ascending: false)
+    
+        request.sortDescriptors = [sort]
+    
+        let episode = try self.context.fetch(request)
+        var epiId = [Int64]()
+    
+        if episode.count != 0{
+            for epi in episode{
+                epiId.append(epi.id)
+            }
+            return epiId
+        }else{
+            return nil
+        }
+    }
+    
+    func getEpisode() throws -> [EpisodeResults]{
+        print("episodes coreData")
+        let request = CoreEpisodes.fetchRequest() as NSFetchRequest<CoreEpisodes>
+        let data = try self.context.fetch(request)
+        var episodes: [EpisodeResults] = []
+        
+        for episode in data{
+            let epi = EpisodeResults(id: Int(episode.id), name: episode.name!, air_date: episode.airDate!, episode: episode.episode!, characters: nil, url: URL(string: episode.url!)!, created: episode.created!)
+            episodes.append(epi)
+        }
+        
+        return episodes
+    }
+    
+}
+    
+    
+    
 //
 //    func setRelationship(character: Character, episodesURL: [URL]) throws{
 //        var episodes = [EpisodeResults]()
@@ -178,29 +240,11 @@ class CoreHandler{
 //        }
 //    }
 //
-//    func addEpisode(episode: EpisodeResults) throws{
-//
-//        let newEpisode = Episode(context: context)
-//        newEpisode.id = Int64(episode.id)
-//        newEpisode.name = episode.name
-//        newEpisode.air_date = episode.air_date
-//        newEpisode.url = episode.url?.absoluteString
-//        newEpisode.created = episode.created
-//
-//        print("saved in coreData: \(String(describing: episode.url))")
-//        self.context.insert(newEpisode)
-//        try self.context.save()
-//    }
+
 //
 
 //
-//    func getEpisode() throws -> [Episode]{
-//
-//        print("episodes coreData")
-//        let request = Episode.fetchRequest() as NSFetchRequest<Episode>
-//        let data = try self.context.fetch(request)
-//        return data
-//    }
+
 //
 
 
@@ -224,26 +268,8 @@ class CoreHandler{
 //        }
 //    }
 //
-//    private func fetchEpisodesId() throws -> [Int64]?{
-//
-//        let request = Episode.fetchRequest() as NSFetchRequest<Episode>
-//        let sort = NSSortDescriptor(key: "id", ascending: false)
-//
-//        request.sortDescriptors = [sort]
-//
-//        let episode = try self.context.fetch(request)
-//        var epiId = [Int64]()
-//
-//        if episode.count != 0{
-//            for epi in episode{
-//                epiId.append(epi.id)
-//            }
-//            return epiId
-//        }else{
-//            return nil
-//        }
-//    }
-}
+
+
 
 extension CoreHandler{
     

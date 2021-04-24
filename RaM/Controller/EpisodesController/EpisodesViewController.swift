@@ -7,26 +7,44 @@
 
 import UIKit
 
-class EpisodesViewController: UIViewController {
+class EpisodesViewController: UIViewController{
     
     let data = DataHandler()
+    var pageIteration = 0
+    
+    var episodes: [EpisodeResults] = []
+    var filtredEpisodes: [EpisodeResults] = []
+    var tableData: [EpisodeResults] = []
+    
+    var connection = false
+    var info: Info?
+    var seasonPickerData: [String] = ["all"]
+    var choosedEpisode: EpisodeResults?
+    
+    @IBOutlet weak var episodeTableView: UITableView!
+    @IBOutlet weak var seasonPicker: UIPickerView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        test()
+        
+        loadPickerData()
+        
+        episodeTableView.delegate = self
+        episodeTableView.dataSource = self
+        
+        self.seasonPicker.delegate = self
+        self.seasonPicker.dataSource = self
+        
+        loadInfo()
+        loadData()
+        reloadTableData(data: episodes)
     }
     
-    func test(){
-        do{
-            if let episodes = try data.getEpisodes(){
-                for (index, episode) in episodes.enumerated(){
-                    print("\(index): episode name: \(episode.name), episode number: \(episode.episode)")
-                }
-            }
-        }catch{
-            
+    func loadPickerData(){
+        for index in 1...5{
+            seasonPickerData.append("S0\(index)")
         }
     }
-
+    
+    
 }
