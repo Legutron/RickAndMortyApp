@@ -36,7 +36,6 @@ class MenuViewController: UIViewController {
         
     }
     
-    
     func showActivityIndicator() {
         activityView = UIActivityIndicatorView(style: .large)
         activityView?.center = self.view.center

@@ -10,6 +10,7 @@ import UIKit
 
 class EpisodeDetailsCell: UITableViewCell{
 
-  
+    @IBOutlet weak var avatar: UIImageView!
+    @IBOutlet weak var name: UILabel!
     
 }

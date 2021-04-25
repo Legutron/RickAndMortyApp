@@ -24,15 +24,14 @@ class CharacterViewController: UIViewController {
     
         
     override func viewDidLoad() {
-        super.viewDidLoad()    
-        
+        super.viewDidLoad()
         characterTableView.delegate = self
         characterTableView.dataSource = self
         loadInfo()
         loadCharacters()
     }
     
-    func showActivityIndicator() {
+    private func showActivityIndicator() {
         activityView = UIActivityIndicatorView(style: .large)
         activityView?.center = self.view.center
         activityView?.color = UIColor(named: "appYellow") ?? UIColor.yellow
@@ -40,7 +39,7 @@ class CharacterViewController: UIViewController {
         activityView?.startAnimating()
     }
 
-    func hideActivityIndicator(){
+    private func hideActivityIndicator(){
         if (activityView != nil){
             activityView?.stopAnimating()
         }

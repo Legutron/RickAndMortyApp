@@ -40,7 +40,7 @@ class EpisodesViewController: UIViewController{
         reloadTableData(data: episodes)
     }
     
-    func loadPickerData(){
+    private func loadPickerData(){
         for index in 1...5{
             seasonPickerData.append("S0\(index)")
         }

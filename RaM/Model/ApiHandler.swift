@@ -46,7 +46,6 @@ extension ApiHandler{
         if let data = try dataFromUrl(url: url){
             let CharResult = try decoder.decode(CharacterMain.self, from: data)
             let characters = CharResult.results
-            //try dataHandler.saveCharacters(characters: characters)
             return characters
         }else{
             return nil
@@ -56,7 +55,6 @@ extension ApiHandler{
     func getFiltredCharacters(status: String) throws -> [CharacterResults]?{
         let page = "/?status=\(status)"
         let url = URL(string: charactersUrl + page)!
-        print(url)
         if let data = try dataFromUrl(url: url){
             let CharResult = try decoder.decode(CharacterMain.self, from: data)
             let characters = CharResult.results
@@ -74,6 +72,19 @@ extension ApiHandler{
             }
         }
         return image
+    }
+    
+    func getCharactersFromUrl(url: String) throws -> [CharacterResults]{
+        
+        var characters: [CharacterResults] = []
+                
+        if let url = URL(string: url){
+            if let data = try? Data(contentsOf: url){
+                let character = try decoder.decode(CharacterResults.self, from: data)
+                characters.append(character)
+            }
+        }
+        return characters
     }
     
 }
@@ -105,10 +116,5 @@ extension ApiHandler{
             return nil
         }
     }
-    
-
-    
-
-    
 
 }

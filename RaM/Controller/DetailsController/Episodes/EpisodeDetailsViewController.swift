@@ -10,17 +10,35 @@ import UIKit
 class EpisodeDetailsViewController: UIViewController {
 
     var episode: EpisodeResults?
+    let data = DataHandler()
+    var characters: [CharacterResults] = []
+    
+    @IBOutlet weak var charactersTableView: UITableView!
+    @IBOutlet weak var titleLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        charactersTableView.delegate = self
+        charactersTableView.dataSource = self
+        
         if episode != nil{
-            print(episode)
+            loadCharacters()
+            titleLabel.text = episode!.name
+            charactersTableView.reloadData()
         }
     }
     
     private func setLabels(episode: EpisodeResults){
         
+    }
+    
+    private func loadCharacters(){
+        do{
+            characters = try data.getCharactersFromUrl(url: episode!.characters!)
+        }catch{
+            print(error.localizedDescription)
+        }
     }
 
 }

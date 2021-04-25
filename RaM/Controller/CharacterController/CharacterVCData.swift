@@ -9,7 +9,6 @@ import UIKit
 
 extension CharacterViewController{
     
-    
     func loadCharacters(){
         do{
             if let char = try data.getCharacters(iteration: pageIteration){

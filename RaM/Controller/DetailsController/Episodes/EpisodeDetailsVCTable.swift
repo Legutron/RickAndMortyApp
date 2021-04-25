@@ -7,23 +7,20 @@
 
 import UIKit
 
-class EpisodeDetailsVCTable: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+extension EpisodeDetailsViewController: UITableViewDelegate, UITableViewDataSource{
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return characters.count
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "detailsCell") as! EpisodeDetailsCell
+        cell.name.text = characters[indexPath.row].name
+        cell.avatar.image = data.getAvatar(url: characters[indexPath.row].image)
+        return cell
+        
     }
-    */
-
+    
 }

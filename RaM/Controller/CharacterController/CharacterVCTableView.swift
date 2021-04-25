@@ -20,9 +20,6 @@ extension CharacterViewController: UITableViewDelegate, UITableViewDataSource{
     
     func reloadTableData(){
         characterTableView.reloadData()
-        if characters.count > (pageIteration-1) * 20{
-            //hideActivityIndicator()
-        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -46,11 +43,9 @@ extension CharacterViewController: UITableViewDelegate, UITableViewDataSource{
             
             if connection{
                 if pageIteration < info!.pages{
-                    //showActivityIndicator()
                     pageIteration += 1
                     loadCharacters()
                     reloadTableData()
-                    //hideActivityIndicator()
                 }
             }
         }
@@ -60,7 +55,5 @@ extension CharacterViewController: UITableViewDelegate, UITableViewDataSource{
         choosedCharacter = characters[indexPath.row]
         self.performSegue(withIdentifier: "toCharacterDetail", sender: nil)
     }
-    
 
-    
 }

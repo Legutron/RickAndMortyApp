@@ -36,7 +36,6 @@ extension EpisodesViewController{
                 print(error.localizedDescription)
             }
         }
-        print(episodes)
     }
     
     func filtrEpisode(value: String) -> [EpisodeResults]{
